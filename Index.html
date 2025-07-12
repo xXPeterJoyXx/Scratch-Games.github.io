@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch Games - Play Amazing Games!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #4a90e2 0%, #2c5aa0 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.1) 10px,
+                rgba(255,255,255,0.1) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-50px) translateY(-50px); }
+            100% { transform: translateX(0px) translateY(0px); }
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff9500, #ff6b6b);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .main-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 2;
+            position: relative;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+            z-index: 2;
+            position: relative;
+        }
+
+        .support-banner {
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+            margin: 20px;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .support-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .support-banner:hover::before {
+            left: 100%;
+        }
+
+        .support-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .games-section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .game-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .game-card:nth-child(odd) {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .game-card:nth-child(4n) {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .game-card:nth-child(4n+1) {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .game-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .game-description {
+            font-size: 0.9em;
+            opacity: 0.9;
+            z-index: 2;
+            position: relative;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 70%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            top: 30%;
+            left: 70%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .stats-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4ecdc4;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .play-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .play-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title {
+                font-size: 2em;
+            }
+            
+            .section-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">🎮</div>
+            <div>
+                <div class="main-title">Scratch Games</div>
+                <div class="subtitle">Play Amazing Games Online!</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="support-banner" onclick="showSupportMessage()">
+        <strong>🌟 Support Our Amazing Community! 🌟</strong>
+        <p>Help us create more awesome games for everyone to enjoy!</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">50K+</div>
+            <div class="stat-label">Players</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">100+</div>
+            <div class="stat-label">Games</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Fun</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">Free</div>
+            <div class="stat-label">Always</div>
+        </div>
+    </div>
+
+    <div class="games-section">
+        <h2 class="section-title">🎮 Games</h2>
+        <div class="games-grid">
+            <div class="game-card" onclick="playGame('Cookie Clicker')">
+                <div class="game-title">🍪 Cookie Clicker</div>
+                <div class="game-description">Click cookies to build your empire! Addictive incremental gameplay.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('8 Ball Pool')">
+                <div class="game-title">🎱 8 Ball Pool</div>
+                <div class="game-description">Classic pool game with realistic physics and online multiplayer.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('Golf Battles')">
+                <div class="game-title">⛳ Golf Battles</div>
+                <div class="game-description">Compete in real-time golf matches with players worldwide.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('Scratch Ball Thrower')">
+                <div class="game-title">🏀 Scratch Ball Thrower</div>
+                <div class="game-description">Test your aim and timing in this addictive basketball game.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('Square Shooter')">
+                <div class="game-title">🎯 Square Shooter</div>
+                <div class="game-description">Fast-paced action shooter with geometric enemies and power-ups.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('Sonic The Hedgehog')">
+                <div class="game-title">💨 Sonic The Hedgehog</div>
+                <div class="game-description">Speed through levels as the blue blur in this classic platformer.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('Block Tycoon')">
+                <div class="game-title">🏗️ Block Tycoon</div>
+                <div class="game-description">Build and manage your block empire in this strategic simulation.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('Downgrade')">
+                <div class="game-title">⬇️ Downgrade</div>
+                <div class="game-description">Unique puzzle game where you must strategically downgrade to win.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+            
+            <div class="game-card" onclick="playGame('Bloxfruits Clicker')">
+                <div class="game-title">🍎 Bloxfruits Clicker</div>
+                <div class="game-description">Collect powerful fruits and build your strength in this clicker adventure.</div>
+                <button class="play-button">Play Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function playGame(gameName) {
+            // Define game URLs
+            const gameUrls = {
+                'Cookie Clicker': 'https://orteil.dashnet.org/cookieclicker/',
+                '8 Ball Pool': 'https://www.miniclip.com/games/8-ball-pool-multiplayer/en/',
+                'Golf Battles': 'https://poki.com/en/g/golf-battle',
+                'Scratch Ball Thrower': 'https://scratch.mit.edu/projects/basketball/',
+                'Square Shooter': 'https://poki.com/en/g/square-shooter',
+                'Sonic The Hedgehog': 'https://www.crazygames.com/game/sonic-the-hedgehog',
+                'Block Tycoon': 'https://www.roblox.com/games/build-a-boat-for-treasure',
+                'Downgrade': 'https://armorgames.com/downgrade-game',
+                'Bloxfruits Clicker': 'https://www.roblox.com/games/blox-fruits'
+            };
+            
+            const gameUrl = gameUrls[gameName];
+            
+            if (gameUrl) {
+                // Create a confirmation modal
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                    backdrop-filter: blur(5px);
+                `;
+                
+                const content = document.createElement('div');
+                content.style.cssText = `
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    padding: 40px;
+                    border-radius: 20px;
+                    text-align: center;
+                    color: white;
+                    max-width: 400px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    transform: scale(0.8);
+                    animation: modalPop 0.3s ease forwards;
+                `;
+                
+                content.innerHTML = `
+                    <div style="font-size: 3em; margin-bottom: 20px;">🎮</div>
+                    <div style="font-size: 1.3em; margin-bottom: 30px;">Ready to play ${gameName}?</div>
+                    <div style="font-size: 0.9em; margin-bottom: 30px; opacity: 0.8;">This will open the game in a new tab</div>
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button onclick="window.open('${gameUrl}', '_blank'); this.parentElement.parentElement.parentElement.remove();" style="
+                            background: linear-gradient(45deg, #2ecc71, #27ae60);
+                            border: none;
+                            color: white;
+                            padding: 15px 25px;
+                            font-size: 1.1em;
+                            border-radius: 25px;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                        ">Play Now! 🚀</button>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="
+                            background: linear-gradient(45deg, #e74c3c, #c0392b);
+                            border: none;
+                            color: white;
+                            padding: 15px 25px;
+                            font-size: 1.1em;
+                            border-radius: 25px;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                        ">Cancel</button>
+                    </div>
+                `;
+                
+                // Add animation keyframes
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes modalPop {
+                        to { transform: scale(1); }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                modal.appendChild(content);
+                document.body.appendChild(modal);
+                
+                // Remove modal when clicking outside
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
+                });
+            }
+        }
+        
+        function showSupportMessage() {
+            const supportMessages = [
+                "🌟 Thanks for your support! Every contribution helps us create better games!",
+                "💖 Your support means the world to us! Keep gaming!",
+                "🚀 Together we can build the best gaming platform ever!",
+                "🎮 Thank you for being part of our amazing community!",
+                "⭐ Your support helps us keep the games free for everyone!"
+            ];
+            
+            const randomMessage = supportMessages[Math.floor(Math.random() * supportMessages.length)];
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                backdrop-filter: blur(5px);
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: linear-gradient(135deg, #2ecc71, #27ae60);
+                padding: 40px;
+                border-radius: 20px;
+                text-align: center;
+                color: white;
+                max-width: 400px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                transform: scale(0.8);
+                animation: modalPop 0.3s ease forwards;
+            `;
+            
+            content.innerHTML = `
+                <div style="font-size: 3em; margin-bottom: 20px;">💖</div>
+                <div style="font-size: 1.3em; margin-bottom: 30px;">${randomMessage}</div>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                    border: none;
+                    color: white;
+                    padding: 15px 30px;
+                    font-size: 1.1em;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                ">Thank You! 🎮</button>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        // Add some interactive particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                width: 6px;
+                height: 6px;
+                background: rgba(255,255,255,0.8);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1;
+            `;
+            
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 'px';
+            
+            document.body.appendChild(particle);
+            
+            const animation = particle.animate([
+                { transform: 'translateY(0px)', opacity: 1 },
+                { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
+            ], {
+                duration: 3000 + Math.random() * 2000,
+                easing: 'linear'
+            });
+            
+            animation.onfinish = () => particle.remove();
+        }
+        
+        // Create particles periodically
+        setInterval(createParticle, 500);
+    </script>
+</body>
+</html>
